@@ -2,14 +2,13 @@ import { run } from "world";
 import "./style.scss";
 import { useState } from "react";
 
-
 export default function DisplayWorld() {
     const [isRunning, setIsRunning] = useState(false);
 
     const runWorld = () => {
         if (isRunning) { return; }
         setIsRunning(true);
-        run();
+        run("#minecrust-world-canvas");
     };
 
     return (

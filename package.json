@@ -6,11 +6,11 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
-        "load:wasm-assets": "cp world/assets/* public/assets",
-        "dev:wasm": "wasm-pack build world --dev --target web --out-dir pkg",
-        "build:wasm": "wasm-pack build world --release --target web --out-dir pkg",
         "lint": "eslint .",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "load:wasm-assets": "cp world/assets/* public/assets",
+        "build:wasm": "wasm-pack build world --dev --target web --out-dir pkg",
+        "build:wasm-release": "wasm-pack build world --release --target web --out-dir pkg"
     },
     "dependencies": {
         "react": "^18.3.1",
