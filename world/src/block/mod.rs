@@ -1,7 +1,5 @@
 use bevy::prelude::*;
-use mesh::set_block_uv;
 
-mod mesh;
 mod uv;
 
 pub struct BlockPlugin;
@@ -21,21 +19,33 @@ fn spawn_blocks(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    //let cube_mesh = meshes.add(Cuboid::new(1.0, 1.0, 1.0));
-    let texture_image: Handle<Image> = asset_server.load("grass.png");
+    let grass_texture = asset_server.load("grass.png");
+    let dirt_texture = asset_server.load("dirt.png");
 
-    // TODO: This is ugly. Include UV setting in mesh creation.
-    let mut block_mesh = mesh::create_block_mesh();
-    set_block_uv(uv::TextureUVAlignment::SideTopBottom, &mut block_mesh);
-
-    let mesh_handle = meshes.add(block_mesh);
-
-    let material_handle = materials.add(StandardMaterial {
-        base_color_texture: Some(texture_image),
+    let grass_material_handle = materials.add(StandardMaterial {
+        base_color_texture: Some(grass_texture),
         reflectance: 0.02,
         unlit: true,
         ..default()
     });
+
+    let dirt_material_handle = materials.add(StandardMaterial {
+        base_color_texture: Some(dirt_texture),
+        reflectance: 0.02,
+        unlit: true,
+        ..default()
+    });
+
+    let block_mesh = Cuboid::from_length(1.0).mesh().build();
+
+    let mut grass_mesh = block_mesh.clone();
+    let mut dirt_mesh = block_mesh;
+
+    grass_mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uv::uv_sides_top_bottom_alignment());
+    let grass_mesh_handle = meshes.add(grass_mesh);
+
+    dirt_mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uv::uv_single_side_alignment());
+    let dirt_mesh_handle = meshes.add(dirt_mesh);
 
     for x in 0..10 {
         for z in 0..10 {
@@ -43,8 +53,22 @@ fn spawn_blocks(
                 Block,
                 PbrBundle {
                     transform: Transform::from_xyz(x as f32, 0.0, z as f32),
-                    mesh: mesh_handle.clone(),
-                    material: material_handle.clone(),
+                    mesh: grass_mesh_handle.clone(),
+                    material: grass_material_handle.clone(),
+                    ..default()
+                },
+            ));
+        }
+    }
+
+    for x in 0..10 {
+        for z in 0..10 {
+            commands.spawn((
+                Block,
+                PbrBundle {
+                    transform: Transform::from_xyz(x as f32, -1.0, z as f32),
+                    mesh: dirt_mesh_handle.clone(),
+                    material: dirt_material_handle.clone(),
                     ..default()
                 },
             ));

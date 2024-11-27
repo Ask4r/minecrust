@@ -1,45 +1,49 @@
-const ONE_THIRD: f32 = 1.0 / 3.0;
-const TWO_THIRDS: f32 = 2.0 / 3.0;
+const FRAC_1_3: f32 = 1.0 / 3.0;
+const FRAC_2_3: f32 = 2.0 / 3.0;
+// Padding used to prevent UV's overlapping.
+const UV_PADDING: f32 = 0.0001;
 
-pub enum TextureUVAlignment {
-    Single,
-    SideTopBottom,
+// NOTE: Following UVs are written for bevy's Cuboid mesh indices
+
+// NOTE: (0.0, 0.0) = Top-Left in UV mapping,
+// (1.0, 1.0) = Bottom-Right in UV mapping
+
+/// Treats texture image as single texture for each side.
+#[rustfmt::skip]
+pub fn uv_single_side_alignment() -> Vec<[f32; 2]> {
+    vec![
+        // Assigning the UV coords for the forward side.
+        [1.0, 1.0], [0.0, 1.0], [0.0, 0.0], [1.0, 0.0],
+        // Assigning the UV coords for the back side.
+        [0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0],
+        // Assigning the UV coords for the left side.
+        [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
+        // Assigning the UV coords for the right side.
+        [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
+        // Assigning the UV coords for the top side.
+        [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
+        // Assigning the UV coords for the bottom side.
+        [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
+    ]
 }
 
-impl TextureUVAlignment {
-    #[rustfmt::skip]
-    pub fn float_uv_vec(&self) -> Vec<[f32; 2]> {
-        match self {
-            Self::Single => vec![
-                // Assigning the UV coords for the top side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-                // Assigning the UV coords for the bottom side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-                // Assigning the UV coords for the right side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-                // Assigning the UV coords for the left side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-                // Assigning the UV coords for the back side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-                // Assigning the UV coords for the forward side.
-                [0.0, 1.0], [0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
-            ],
-            // Set-up UV coordinates to point to the upper (V < 0.5),
-            // "dirt+grass" part of the texture.
-            Self::SideTopBottom => vec![
-                // Assigning the UV coords for the top side.
-                [0.0, TWO_THIRDS], [0.0, ONE_THIRD], [1.0, ONE_THIRD], [1.0, TWO_THIRDS],
-                // Assigning the UV coords for the bottom side.
-                [0.0, 1.0], [0.0, TWO_THIRDS], [1.0, TWO_THIRDS], [1.0, 1.0],
-                // Assigning the UV coords for the right side.
-                [1.0, ONE_THIRD], [0.0, ONE_THIRD], [0.0, 0.0], [1.0, 0.0],
-                // Assigning the UV coords for the left side.
-                [1.0, ONE_THIRD], [0.0, ONE_THIRD], [0.0, 0.0], [1.0, 0.0],
-                // Assigning the UV coords for the back side.
-                [0.0, ONE_THIRD], [0.0, 0.0], [1.0, 0.0], [1.0, ONE_THIRD],
-                // Assigning the UV coords for the forward side.
-                [0.0, ONE_THIRD], [0.0, 0.0], [1.0, 0.0], [1.0, ONE_THIRD],
-            ],
-        }
-    }
+/// Treats texture image as 3 square textures stacked vertically:
+/// first for 4 sides (left, right, forward and back),
+/// second for top, third for bottom.
+#[rustfmt::skip]
+pub fn uv_sides_top_bottom_alignment() -> Vec<[f32; 2]> {
+    vec![
+        // Assigning the UV coords for the forward side.
+        [1.0, FRAC_1_3 - UV_PADDING], [0.0, FRAC_1_3 - UV_PADDING], [0.0, 0.0], [1.0, 0.0],
+        // Assigning the UV coords for the back side.
+        [0.0, 0.0], [1.0, 0.0], [1.0, FRAC_1_3 - UV_PADDING], [0.0, FRAC_1_3 - UV_PADDING],
+        // Assigning the UV coords for the left side.
+        [0.0, FRAC_1_3 - UV_PADDING], [0.0, 0.0], [1.0, 0.0], [1.0, FRAC_1_3 - UV_PADDING],
+        // Assigning the UV coords for the right side.
+        [0.0, FRAC_1_3 - UV_PADDING], [0.0, 0.0], [1.0, 0.0], [1.0, FRAC_1_3 - UV_PADDING],
+        // Assigning the UV coords for the top side.
+        [0.0, FRAC_2_3 - UV_PADDING], [0.0, FRAC_1_3 + UV_PADDING], [1.0, FRAC_1_3 + UV_PADDING], [1.0, FRAC_2_3 - f32::EPSILON],
+        // Assigning the UV coords for the bottom side.
+        [0.0, 1.0], [0.0, FRAC_2_3 + UV_PADDING], [1.0, FRAC_2_3 + UV_PADDING], [1.0, 1.0],
+    ]
 }

@@ -48,8 +48,6 @@ pub fn move_camera(
 
     let mut direction = Vec3::ZERO;
 
-    // TODO: KeyD press on web
-
     if keyboard_input.pressed(KeyCode::ArrowLeft) || keyboard_input.pressed(KeyCode::KeyA) {
         direction -= right;
     }
