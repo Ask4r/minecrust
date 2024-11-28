@@ -8,6 +8,7 @@ const PITCH_LOCK: f32 = 1.37; // 0 to PI/2
 
 #[derive(Component)]
 pub struct CameraController {
+    pub translation: Vec3,
     pub rotation: Vec2,
 }
 
@@ -38,10 +39,10 @@ pub fn rotate_camera(
 
 pub fn move_camera(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut camera_query: Query<&mut Transform, With<PlayerCamera>>,
+    mut camera_query: Query<(&mut Transform, &mut CameraController), With<PlayerCamera>>,
     time: Res<Time>,
 ) {
-    let mut transform = camera_query.single_mut();
+    let (mut transform, mut controller) = camera_query.single_mut();
     let forward = *transform.forward();
     let right = *transform.right();
     let up = *transform.up();
@@ -67,5 +68,8 @@ pub fn move_camera(
         direction -= up;
     }
 
-    transform.translation += direction.normalize_or_zero() * MOVE_SPEED * time.delta_seconds();
+    let delta = direction.normalize_or_zero() * MOVE_SPEED * time.delta_seconds();
+    controller.translation += delta;
+
+    transform.translation = transform.translation.lerp(controller.translation, 0.2);
 }

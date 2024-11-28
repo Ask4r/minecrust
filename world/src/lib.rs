@@ -1,18 +1,18 @@
 use bevy::{
+    asset::AssetMetaCheck,
+    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin},
     log::{Level, LogPlugin},
     prelude::*,
 };
+use bevy_kira_audio::prelude::*;
 use wasm_bindgen::prelude::*;
-
-use block::BlockPlugin;
-use camera::PlayerCameraPlugin;
-use cursor::CursorPlugin;
 
 mod block;
 mod camera;
 mod cursor;
+mod random;
+mod ui;
 
-const WINDOW_TITLE: &str = "Minecrust";
 const LOG_FILTER: &str =
     "wgpu=warn,bevy_app=info,bevy_render=info,bevy_ecs=info,bevy_time=info,naga=info,winit=info";
 
@@ -29,7 +29,7 @@ pub fn run(canvas_id: &str) {
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: WINDOW_TITLE.into(),
+                        title: "Minecrust".into(),
                         canvas: Some(canvas_id.into()),
                         fit_canvas_to_parent: true,
                         prevent_default_event_handling: true,
@@ -42,10 +42,26 @@ pub fn run(canvas_id: &str) {
                     level: Level::DEBUG,
                     custom_layer: |_| None,
                 })
-                .set(ImagePlugin::default_nearest()),
-            PlayerCameraPlugin,
-            CursorPlugin,
-            BlockPlugin,
+                .set(ImagePlugin::default_nearest())
+                .set(AssetPlugin {
+                    meta_check: AssetMetaCheck::Never,
+                    ..default()
+                }),
+            FpsOverlayPlugin {
+                config: FpsOverlayConfig {
+                    text_config: TextStyle {
+                        font_size: 50.0,
+                        color: Color::srgb(0.0, 1.0, 0.0),
+                        font: default(),
+                    },
+                },
+            },
+            AudioPlugin,
+            camera::PlayerCameraPlugin,
+            cursor::CursorPlugin,
+            block::BlockPlugin,
+            ui::UIPligin,
+            random::RandomPlugin,
         ))
         .run();
 }

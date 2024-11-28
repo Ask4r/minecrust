@@ -1,12 +1,14 @@
 use bevy::prelude::*;
 
+mod modify;
 mod uv;
 
 pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, spawn_blocks);
+        app.add_systems(Startup, spawn_blocks)
+            .add_systems(Update, modify::delete_block);
     }
 }
 
@@ -62,16 +64,18 @@ fn spawn_blocks(
     }
 
     for x in 0..10 {
-        for z in 0..10 {
-            commands.spawn((
-                Block,
-                PbrBundle {
-                    transform: Transform::from_xyz(x as f32, -1.0, z as f32),
-                    mesh: dirt_mesh_handle.clone(),
-                    material: dirt_material_handle.clone(),
-                    ..default()
-                },
-            ));
+        for y in -10..=-1 {
+            for z in 0..10 {
+                commands.spawn((
+                    Block,
+                    PbrBundle {
+                        transform: Transform::from_xyz(x as f32, y as f32, z as f32),
+                        mesh: dirt_mesh_handle.clone(),
+                        material: dirt_material_handle.clone(),
+                        ..default()
+                    },
+                ));
+            }
         }
     }
 }

@@ -3,9 +3,6 @@ use bevy::{core_pipeline::Skybox, prelude::*};
 mod controls;
 mod skybox;
 
-//pub const SKYBOX_SHEET: &str = "mars_spritesheet.png";
-const SKYBOX_SHEET: &str = "skysheet.png";
-
 pub struct PlayerCameraPlugin;
 
 impl Plugin for PlayerCameraPlugin {
@@ -23,10 +20,10 @@ impl Plugin for PlayerCameraPlugin {
 }
 
 #[derive(Component)]
-struct PlayerCamera;
+pub struct PlayerCamera;
 
 fn create_camera_with_skybox(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let skybox_image = asset_server.load(SKYBOX_SHEET);
+    let skybox_image = asset_server.load("skysheet.png");
 
     commands.insert_resource(skybox::SkyboxCubemap {
         image: skybox_image.clone(),
@@ -35,12 +32,10 @@ fn create_camera_with_skybox(mut commands: Commands, asset_server: Res<AssetServ
     commands.spawn((
         PlayerCamera,
         controls::CameraController {
+            translation: Vec3::new(0.0, 3.0, 5.0),
             rotation: Vec2::ZERO,
         },
-        Camera3dBundle {
-            transform: Transform::from_xyz(0.0, 4.0, 5.0),
-            ..default()
-        },
+        Camera3dBundle::default(),
         Skybox {
             image: skybox_image,
             brightness: 1000.0,

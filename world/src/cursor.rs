@@ -1,4 +1,7 @@
-use bevy::{prelude::*, window::CursorGrabMode};
+use bevy::{
+    prelude::*,
+    window::{CursorGrabMode, PrimaryWindow},
+};
 
 pub struct CursorPlugin;
 
@@ -9,7 +12,7 @@ impl Plugin for CursorPlugin {
 }
 
 fn cursor_grab(
-    mut windows_query: Query<&mut Window>,
+    mut windows_query: Query<&mut Window, With<PrimaryWindow>>,
     mouse: Res<ButtonInput<MouseButton>>,
     key: Res<ButtonInput<KeyCode>>,
 ) {
