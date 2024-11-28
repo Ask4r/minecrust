@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cd world
+cargo install wasm-pack
 cargo build
 cd ..
 
