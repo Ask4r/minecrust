@@ -58,30 +58,3 @@ pub fn delete_block(
 
     audio.play(asset_server.load(audio_path));
 }
-
-//pub fn spawn_block(
-//    mut commands: Commands,
-//    mut raycast: Raycast,
-//    window_query: Query<&Window, With<PrimaryWindow>>,
-//    camera_query: Query<(&Camera, &GlobalTransform), With<PlayerCamera>>,
-//    mouse: Res<ButtonInput<MouseButton>>,
-//) {
-//    if !mouse.just_pressed(MouseButton::Right) {
-//        return;
-//    }
-//
-//    let window = window_query.single();
-//    let (camera, transform) = camera_query.single();
-//
-//    let cursor_position = window.size() * 0.5;
-//    let Some(ray) = camera.viewport_to_world(transform, cursor_position) else {
-//        error!("Cannot compute viewport or camera plane.");
-//        return;
-//    };
-//
-//    let Some((entity, _data)) = raycast.cast_ray(ray, &default()).get(0) else {
-//        return;
-//    };
-//    commands.entity(*entity);
-//}
-//

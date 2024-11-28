@@ -9,6 +9,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 bevy = { version = "0.14.1", features = ["webgl2", "bevy_dev_tools"]}
 bevy_kira_audio = { version = "0.20.0", features = ["mp3"]}
+bevy_mod_picking = "0.20.1"
 bevy_mod_raycast = "0.18.0"
 rand = "0.8.5"
 rand_chacha = "0.3.1"

@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use rand::prelude::*;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 

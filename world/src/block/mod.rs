@@ -15,6 +15,12 @@ impl Plugin for BlockPlugin {
 #[derive(Component)]
 pub struct Block;
 
+#[derive(Bundle)]
+struct BlockBundle {
+    marker: Block,
+    pbr: PbrBundle,
+}
+
 fn spawn_blocks(
     mut commands: Commands,
     asset_server: Res<AssetServer>,

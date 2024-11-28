@@ -8,9 +8,10 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "load:wasm-assets": "cp world/assets/* public/assets",
+        "load:wasm-assets": "cp -r world/assets/* public/assets",
         "build:wasm": "wasm-pack build world --dev --target web --out-dir pkg",
-        "build:wasm-release": "wasm-pack build world --release --target web --out-dir pkg"
+        "build:wasm-release": "wasm-pack build world --release --target web --out-dir pkg",
+        "deploy": "sh scripts/deploy.sh"
     },
     "dependencies": {
         "react": "^18.3.1",

@@ -5,6 +5,7 @@ use bevy::{
     prelude::*,
 };
 use bevy_kira_audio::prelude::*;
+use bevy_mod_picking::prelude::*;
 use wasm_bindgen::prelude::*;
 
 mod block;
@@ -56,6 +57,9 @@ pub fn run(canvas_id: &str) {
                     },
                 },
             },
+            DefaultPickingPlugins
+                .build()
+                .disable::<DefaultHighlightingPlugin>(),
             AudioPlugin,
             camera::PlayerCameraPlugin,
             cursor::CursorPlugin,
