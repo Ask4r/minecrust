@@ -1,0 +1,15 @@
+{
+  "name": "world",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "world_bg.wasm",
+    "world.js",
+    "world.d.ts"
+  ],
+  "main": "world.js",
+  "types": "world.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
