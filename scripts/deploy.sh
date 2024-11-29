@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cd world
+rustup target add wasm32-unknown-unknown --toolchain nightly
 cargo install wasm-pack
 cargo build
 cd ..
