@@ -1,11 +1,9 @@
 use bevy::{
     asset::AssetMetaCheck,
-    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin},
     log::{Level, LogPlugin},
     prelude::*,
 };
 use bevy_kira_audio::prelude::*;
-use bevy_mod_picking::prelude::*;
 use wasm_bindgen::prelude::*;
 
 mod block;
@@ -15,13 +13,7 @@ mod random;
 mod ui;
 
 const LOG_FILTER: &str =
-    "wgpu=warn,bevy_app=info,bevy_render=info,bevy_ecs=info,bevy_time=info,naga=info,winit=info";
-
-//#[wasm_bindgen]
-//extern "C" {
-//    #[wasm_bindgen(js_namespace = console)]
-//    fn log(s: &str);
-//}
+    "wgpu=warn,bevy_app=info,bevy_render=info,bevy_ecs=info,bevy_time=info,naga=info,winit=info,cosmic_text=info,offset_allocator=info";
 
 #[wasm_bindgen]
 pub fn run(canvas_id: &str) {
@@ -48,22 +40,11 @@ pub fn run(canvas_id: &str) {
                     meta_check: AssetMetaCheck::Never,
                     ..default()
                 }),
-            FpsOverlayPlugin {
-                config: FpsOverlayConfig {
-                    text_config: TextStyle {
-                        font_size: 50.0,
-                        color: Color::srgb(0.0, 1.0, 0.0),
-                        font: default(),
-                    },
-                },
-            },
-            DefaultPickingPlugins
-                .build()
-                .disable::<DefaultHighlightingPlugin>(),
+            MeshPickingPlugin,
             AudioPlugin,
+            block::BlockPlugin,
             camera::PlayerCameraPlugin,
             cursor::CursorPlugin,
-            block::BlockPlugin,
             ui::UIPligin,
             random::RandomPlugin,
         ))

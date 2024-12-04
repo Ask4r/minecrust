@@ -46,19 +46,17 @@ fn cursor_grab(
     if mouse.just_pressed(MouseButton::Left) {
         #[cfg(not(target_family = "wasm"))]
         {
-            window.cursor.visible = false;
+            window.cursor_options.visible = false;
         }
-        window.cursor.grab_mode = CursorGrabMode::Locked;
-        info!("Cursor locked. Grab mode {:?}", window.cursor.grab_mode);
+        window.cursor_options.grab_mode = CursorGrabMode::Locked;
     }
 
     if key.just_pressed(KeyCode::Escape) {
         #[cfg(not(target_family = "wasm"))]
         {
-            window.cursor.visible = true;
+            window.cursor_options.visible = true;
         }
-        window.cursor.grab_mode = CursorGrabMode::None;
-        info!("Cursor unlocked. Grab mode {:?}", window.cursor.grab_mode);
+        window.cursor_options.grab_mode = CursorGrabMode::None;
     }
 
     // Possible implementation for event other than <Escape> click

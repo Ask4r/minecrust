@@ -1,11 +1,9 @@
 use bevy::{
     asset::LoadState,
     core_pipeline::Skybox,
+    image::{ImageSampler, ImageSamplerDescriptor},
     prelude::*,
-    render::{
-        render_resource::{TextureViewDescriptor, TextureViewDimension},
-        texture::{ImageSampler, ImageSamplerDescriptor},
-    },
+    render::render_resource::{TextureViewDescriptor, TextureViewDimension},
 };
 
 #[derive(Resource)]
@@ -20,7 +18,7 @@ pub fn reinterpret_cubemap(
     mut cubemap: ResMut<SkyboxCubemap>,
     mut skyboxes_query: Query<&mut Skybox>,
 ) {
-    if cubemap.loaded || asset_server.load_state(&cubemap.image) != LoadState::Loaded {
+    if cubemap.loaded || !matches!(asset_server.load_state(&cubemap.image), LoadState::Loaded) {
         return;
     }
 

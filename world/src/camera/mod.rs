@@ -31,14 +31,15 @@ fn create_camera_with_skybox(mut commands: Commands, asset_server: Res<AssetServ
     });
     commands.spawn((
         PlayerCamera,
+        Camera3d::default(),
         controls::CameraController {
             translation: Vec3::new(0.0, 3.0, 5.0),
             rotation: Vec2::ZERO,
         },
-        Camera3dBundle::default(),
         Skybox {
             image: skybox_image,
             brightness: 1000.0,
+            rotation: default(),
         },
     ));
 }

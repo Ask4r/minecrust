@@ -68,7 +68,7 @@ pub fn move_camera(
         direction -= up;
     }
 
-    let delta = direction.normalize_or_zero() * MOVE_SPEED * time.delta_seconds();
+    let delta = direction.normalize_or_zero() * MOVE_SPEED * time.delta_secs();
     controller.translation += delta;
 
     transform.translation = transform.translation.lerp(controller.translation, 0.2);
